@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>民宿AI平台推广工具</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏡 民宿AI平台推广</h1>
+            <p class="subtitle">一键将您的民宿信息推送至各大AI平台</p>
+        </header>
+
+        <main>
+            <form id="submitForm">
+                <!-- 第一步：基本信息 -->
+                <div class="form-section">
+                    <h2>📝 第一步：填写民宿基本信息</h2>
+                    
+                    <div class="form-group">
+                        <label for="hostelName1">民宿名称 *</label>
+                        <input type="text" id="hostelName1" required placeholder="例如：山水间民宿">
+                        <small>💡 这是您的主要民宿名称</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hostelName2">第二家民宿名称（选填）</label>
+                        <input type="text" id="hostelName2" placeholder="例如：云端小院">
+                        <small>如果您有第二家民宿，可以一起推广</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">所在位置 *</label>
+                        <input type="text" id="location" required placeholder="例如：浙江杭州西湖区">
+                        <small>💡 详细地址有助于AI平台精准推荐</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">民宿特色介绍 *</label>
+                        <textarea id="description" required rows="5" placeholder="请详细描述您的民宿特色，例如：&#10;- 环境特点（山景/湖景/古镇等）&#10;- 房间设施（独立卫浴/智能家居等）&#10;- 特色服务（早餐/接送/活动等）&#10;- 适合人群（情侣/家庭/团建等）"></textarea>
+                        <small>💡 描述越详细，AI推荐越精准</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact">联系方式 *</label>
+                        <input type="text" id="contact" required placeholder="微信号/电话/预订链接">
+                        <small>💡 建议提供微信或预订平台链接</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">价格区间（选填）</label>
+                        <input type="text" id="price" placeholder="例如：300-800元/晚">
+                        <small>帮助用户快速了解价格定位</small>
+                    </div>
+                </div>
+
+                <!-- 第二步：媒体内容 -->
+                <div class="form-section">
+                    <h2>🎬 第二步：添加宣传素材（选填）</h2>
+                    <p style="color: #666; margin-bottom: 20px; font-size: 0.95em;">
+                        添加视频和图片可以让AI平台更好地展示您的民宿
+                    </p>
+                    
+                    <div class="form-group">
+                        <label for="videoLinks">📹 视频链接</label>
+                        <textarea id="videoLinks" rows="3" placeholder="每行粘贴一个视频链接，例如：&#10;https://www.douyin.com/video/xxxxx&#10;https://www.xiaohongshu.com/video/xxxxx"></textarea>
+                        <small>支持：抖音、小红书、B站、视频号等平台</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imageLinks">🖼️ 图片链接</label>
+                        <textarea id="imageLinks" rows="3" placeholder="每行粘贴一个图片链接"></textarea>
+                        <small>建议上传到图床或使用社交平台图片链接</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="noteLinks">📄 笔记/文章链接</label>
+                        <textarea id="noteLinks" rows="3" placeholder="小红书笔记、公众号文章、游记等链接"></textarea>
+                        <small>已发布的相关内容可以增加可信度</small>
+                    </div>
+                </div>
+
+                <!-- 第三步：选择平台 -->
+                <div class="form-section">
+                    <h2>🎯 第三步：选择推广平台</h2>
+                    <p style="color: #666; margin-bottom: 20px; font-size: 0.95em;">
+                        选择您希望推送的AI平台（建议全选以获得最大曝光）
+                    </p>
+                    <div class="platform-grid">
+                        <label class="platform-checkbox">
+                            <input type="checkbox" name="platform" value="doubao" checked>
+                            <span>🤖 豆包</span>
+                        </label>
+                        <label class="platform-checkbox">
+                            <input type="checkbox" name="platform" value="qianwen" checked>
+                            <span>💬 千问</span>
+                        </label>
+                        <label class="platform-checkbox">
+                            <input type="checkbox" name="platform" value="yuanbao" checked>
+                            <span>💎 元宝</span>
+                        </label>
+                        <label class="platform-checkbox">
+                            <input type="checkbox" name="platform" value="kimi" checked>
+                            <span>🌙 Kimi</span>
+                        </label>
+                        <label class="platform-checkbox">
+                            <input type="checkbox" name="platform" value="wenxin" checked>
+                            <span>🎨 文心一言</span>
+                        </label>
+                        <label class="platform-checkbox">
+                            <input type="checkbox" name="platform" value="chatglm" checked>
+                            <span>🧠 智谱清言</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="button-group">
+                    <button type="button" class="btn-secondary" id="previewBtn">👁️ 预览推广内容</button>
+                    <button type="submit" class="btn-primary">🚀 开始推广</button>
+                </div>
+            </form>
+
+            <!-- 结果显示区域 -->
+            <div id="resultSection" class="result-section" style="display: none;">
+                <h2>📊 推广进度</h2>
+                <div id="progressList" class="progress-list"></div>
+                <div id="summaryContent" class="summary-content"></div>
+            </div>
+        </main>
+
+        <footer>
+            <p>提示：本工具会生成优化的内容格式，帮助AI平台更好地索引您的民宿信息</p>
+        </footer>
+    </div>
+
+    <!-- 预览模态框 -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>内容预览</h2>
+            <div id="previewContent" class="preview-content"></div>
+            <button class="btn-primary" id="closePreview">关闭</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
