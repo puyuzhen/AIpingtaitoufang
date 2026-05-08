@@ -42,6 +42,59 @@ const resultSection = document.getElementById('resultSection');
 const progressList = document.getElementById('progressList');
 const summaryContent = document.getElementById('summaryContent');
 
+// 生成官方提交文案
+function generateSubmissionText(formData) {
+    const hostels = [formData.hostelName1];
+    if (formData.hostelName2) {
+        hostels.push(formData.hostelName2);
+    }
+    
+    let text = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    text += `标题：民宿信息收录申请 - ${hostels[0]}\n`;
+    text += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+    
+    text += `尊敬的平台团队：\n\n`;
+    text += `您好！我是${hostels[0]}的经营者。希望贵平台在用户咨询\n`;
+    text += `"${formData.location}民宿推荐"等相关问题时，能够推荐我们的民宿。\n\n`;
+    
+    text += `【民宿基本信息】\n`;
+    text += `名称：${hostels.join('、')}\n`;
+    text += `位置：${formData.location}\n`;
+    if (formData.price) {
+        text += `价格：${formData.price}\n`;
+    }
+    text += `特色：${formData.description.substring(0, 100)}${formData.description.length > 100 ? '...' : ''}\n`;
+    text += `联系方式：${formData.contact}\n\n`;
+    
+    if (formData.videoLinks || formData.imageLinks || formData.noteLinks) {
+        text += `【线上资料】\n`;
+        if (formData.videoLinks) {
+            const videos = formData.videoLinks.split('\n').filter(link => link.trim());
+            text += `视频链接：\n`;
+            videos.slice(0, 3).forEach(link => {
+                text += `- ${link.trim()}\n`;
+            });
+        }
+        if (formData.noteLinks) {
+            const notes = formData.noteLinks.split('\n').filter(link => link.trim());
+            text += `笔记/文章：\n`;
+            notes.slice(0, 3).forEach(link => {
+                text += `- ${link.trim()}\n`;
+            });
+        }
+        text += `\n`;
+    }
+    
+    text += `【合作意向】\n`;
+    text += `我们愿意为贵平台用户提供专属优惠，并长期保持合作。\n`;
+    text += `期待您的回复！\n\n`;
+    
+    text += `联系人：${formData.contact}\n`;
+    text += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    
+    return text;
+}
+
 // 生成推广内容
 function generatePromotionContent(formData) {
     const hostels = [formData.hostelName1];
@@ -320,36 +373,74 @@ form.addEventListener('submit', async (e) => {
     
     const successRate = Math.round((successCount / totalCount) * 100);
     
+    // 生成官方提交文案
+    const submissionText = generateSubmissionText(formData);
+    
     summaryContent.innerHTML = `
-        <h3>🎉 推广完成！</h3>
-        <div style="margin: 20px 0; padding: 15px; background: #f0f7ff; border-radius: 8px; border-left: 4px solid #667eea;">
-            <p style="font-size: 1.1em; margin-bottom: 10px;">
-                <strong>成功率：</strong><span style="color: #667eea; font-size: 1.3em; font-weight: bold;">${successRate}%</span>
+        <h3>📋 内容已生成！</h3>
+        <div style="margin: 20px 0; padding: 15px; background: #fff9e6; border-radius: 8px; border-left: 4px solid #ff9800;">
+            <p style="font-size: 1.1em; margin-bottom: 10px; color: #e65100;">
+                <strong>⚠️ 重要说明：</strong>
             </p>
-            <p><strong>成功：</strong>${successCount} 个平台 | <strong>失败：</strong>${totalCount - successCount} 个平台</p>
+            <p style="color: #555; line-height: 1.8;">
+                AI平台没有公开API，无法直接推送。但我已为您生成优化的提交文案！
+                请复制下方内容，通过<strong>官方渠道</strong>提交到各AI平台。
+            </p>
         </div>
         
-        <p style="line-height: 1.8; color: #555;">
-            您的民宿信息已提交到选定的AI平台。用户在这些平台搜索"<strong>${formData.location}民宿</strong>"、"<strong>国内民宿推荐</strong>"等关键词时，将有机会看到您的民宿。
-        </p>
+        <div style="margin: 20px 0; padding: 20px; background: white; border-radius: 8px; border: 2px solid #667eea;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h4 style="margin: 0; color: #667eea;">📝 提交文案（点击复制）</h4>
+                <button onclick="copySubmissionText()" style="padding: 8px 20px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+                    📋 一键复制
+                </button>
+            </div>
+            <div id="submissionText" style="padding: 15px; background: #f8f9ff; border-radius: 6px; white-space: pre-wrap; font-size: 0.9em; line-height: 1.8; max-height: 300px; overflow-y: auto;">
+${submissionText}
+            </div>
+        </div>
         
-        <div style="margin-top: 25px; padding: 20px; background: #fff9e6; border-radius: 8px;">
-            <h4 style="margin-bottom: 15px; color: #333;">📌 接下来该做什么？</h4>
+        <div style="margin-top: 25px; padding: 20px; background: #e3f2fd; border-radius: 8px;">
+            <h4 style="margin-bottom: 15px; color: #1976d2;">📌 下一步操作（重要！）</h4>
             <ol style="margin-left: 20px; line-height: 2; color: #555;">
-                <li><strong>等待生效：</strong>AI平台通常需要1-3天索引新内容</li>
-                <li><strong>测试搜索：</strong>3天后在各AI平台搜索您的民宿名称验证</li>
-                <li><strong>持续更新：</strong>每月重新提交一次保持信息新鲜</li>
-                <li><strong>多平台运营：</strong>在小红书、抖音等平台持续发布内容</li>
-                <li><strong>收集好评：</strong>鼓励客人在各平台留下真实评价</li>
+                <li><strong>复制上方文案：</strong>点击"一键复制"按钮</li>
+                <li><strong>打开AI平台APP：</strong>豆包、千问、元宝等</li>
+                <li><strong>找到反馈入口：</strong>设置 → 意见反馈 → 内容建议</li>
+                <li><strong>粘贴并提交：</strong>粘贴文案，提交申请</li>
+                <li><strong>等待审核：</strong>1-4周内会有反馈</li>
             </ol>
         </div>
         
         <div style="margin-top: 20px; padding: 15px; background: #e8f5e9; border-radius: 8px;">
             <p style="margin: 0; color: #2e7d32;">
-                <strong>💡 小贴士：</strong>AI平台更喜欢有丰富内容（图片、视频、评价）的民宿。建议您持续在社交平台发布优质内容，提高曝光率！
+                <strong>💡 提示：</strong>同时向多个平台提交，成功率更高！
+                详细提交渠道请查看：<strong>AI平台官方提交渠道.txt</strong>
             </p>
         </div>
+        
+        <div style="margin-top: 20px; text-align: center;">
+            <button onclick="location.reload()" style="padding: 12px 30px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: bold;">
+                🔄 重新填写
+            </button>
+        </div>
     `;
+    
+    // 添加复制功能
+    window.copySubmissionText = function() {
+        const text = document.getElementById('submissionText').textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('✅ 文案已复制到剪贴板！\n\n现在可以打开AI平台APP，粘贴并提交了。');
+        }).catch(() => {
+            // 备用方案
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('✅ 文案已复制到剪贴板！');
+        });
+    };
 });
 
 // 页面加载完成提示
